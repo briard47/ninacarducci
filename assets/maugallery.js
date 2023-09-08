@@ -53,7 +53,19 @@
         return;
       }
     });
+      $(".gallery-item").on("keypress", function(e){
+        if(e.which == 13){
+        if (options.lightBox && $(this).prop("tagName") === "IMG") {
+          $.fn.mauGallery.methods.openLightBox($(this), options.lightboxId);
+        } else {
+          return;
+        }
+      }} );
     $(".gallery").on("click", ".nav-link", $.fn.mauGallery.methods.filterByTag);
+    $(".gallery").on("keypress", ".nav-link",function(e){
+      if(e.which == 13){ 
+        $.fn.mauGallery.methods.filterByTag.call(this);
+      }});
     $(".gallery").on("click", ".mg-prev", () =>
       $.fn.mauGallery.methods.prevImage(options.lightboxId)
     );
@@ -61,6 +73,7 @@
       $.fn.mauGallery.methods.nextImage(options.lightboxId)
     );
   };
+  
   $.fn.mauGallery.methods = {
     createRowWrapper(element) {
       if (
@@ -214,10 +227,10 @@
     },
     showItemTags(gallery, position, tags) {
       var tagItems =
-        '<li class="nav-item"><span class="nav-link active active-tag"  data-images-toggle="all">Tous</span></li>';
+        '<li class="nav-item"><span tabindex="0" class="nav-link active active-tag"  data-images-toggle="all" aria-label="Tous" >Tous</span></li>';
       $.each(tags, function(index, value) {
         tagItems += `<li class="nav-item active">
-                <span class="nav-link"  data-images-toggle="${value}">${value}</span></li>`;
+                <span tabindex="0" class="nav-link"  data-images-toggle="${value}" aria-label="${value}">${value}</span></li>`;
       });
       var tagsRow = `<ul class="my-4 tags-bar nav nav-pills">${tagItems}</ul>`;
       if (position === "bottom") {
